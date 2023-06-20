@@ -16,6 +16,7 @@ class AxisCCParser(BaseEmailParser):
             return
 
         result = re.findall("Card\sno\.\s(.+?)\sfor\sINR\s(.+?)\sat\s(.+?)\son", email)
+        print(result)
         card_number = result[0][0]
         while ' ' in card_number:
             card_number = re.findall('Card\sno\.\s(.+?)$', card_number)[0]

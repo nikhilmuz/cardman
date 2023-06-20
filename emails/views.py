@@ -53,5 +53,6 @@ class InboundEmailView(APIView):
 
             return Response({"success": True}, status=status.HTTP_200_OK)
         except Exception as e:
+            print(e)
             pass
         return Response({"success": True}, status=status.HTTP_200_OK)
