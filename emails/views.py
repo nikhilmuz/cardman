@@ -39,7 +39,12 @@ class InboundEmailView(APIView):
             base64_message = event.get('content', '')
             decoded_bytes = base64.b64decode(base64_message)
             mail = mailparser.parse_from_bytes(decoded_bytes)
-            decoded_message = mail.text_plain[0]
+            decoded_message = ''
+            for i in mail.text_plain:
+                decoded_message += i
+            if decoded_message == '':
+                for i in mail.text_html:
+                    decoded_message += i
 
             for bank in Bank.objects.all():
                 if bank.alert_email in decoded_message.lower():
