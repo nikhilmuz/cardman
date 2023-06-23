@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ["*"]
 
 SNS_ENDPOINT_SECRET = os.environ.get('SNS_ENDPOINT_SECRET', '82cbcb38-5498-4e7a-b441-a11b5f7806d0')
 
-CSRF_TRUSTED_ORIGINS = ["https://cardman.api.itsniks.com"]
+CSRF_TRUSTED_ORIGINS = [os.environ.get('ENDPOINT_URI_WITH_SCHEMA', 'https://cardman.api.itsniks.com')]
 
 # Application definition
 
