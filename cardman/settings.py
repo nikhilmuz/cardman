@@ -23,13 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-(x&dc^khsyq$t6jxl27mtty*-dnqet$7iet=&f9x$#$of0s*=i')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+ENVIRONMENT = os.environ.get('ENVIRONMENT', 'development')
+DEBUG = (ENVIRONMENT == 'development')
 
 ALLOWED_HOSTS = ["*"]
 
 SNS_ENDPOINT_SECRET = os.environ.get('SNS_ENDPOINT_SECRET', '82cbcb38-5498-4e7a-b441-a11b5f7806d0')
 
-CSRF_TRUSTED_ORIGINS = ["https://cardman.api.itsniks.com"]
+CSRF_TRUSTED_ORIGINS = ["https://*.vivekkaushik.com"]
 
 # Application definition
 
