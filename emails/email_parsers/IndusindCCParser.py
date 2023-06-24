@@ -15,7 +15,7 @@ class IndusindCCParser(BaseEmailParser):
         if 'Transaction Alert - IndusInd Bank Credit Card' not in email:
             return
 
-        result = re.findall("Card\sending\s(.+?)\sfor\sINR\s(.+?)\son\s(.+?)\sat\s(.+?)\sis\s(.+?)\.", email)
+        result = re.findall("Card\sending\s(.+?)\sfor\sINR\\r\\n4,(.+?)\son\s(.+?)\sat\s(.+?)\sis\s(.+?)\.", email)
         card_number = result[0][0]
         amount = int(float(result[0][1].replace(',', '')) * 100)
         store = result[0][3]
