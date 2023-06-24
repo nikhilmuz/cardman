@@ -6,20 +6,21 @@ from emails.email_parsers.BaseEmailParser import BaseEmailParser
 from transactions.models import Transaction
 
 
-class AxisCCParser(BaseEmailParser):
+class IndusindCCParser(BaseEmailParser):
 
     def __init__(self, email: str, cards: QuerySet(Card), transaction: Transaction):
-        if 'Transaction alert on Axis Bank Credit Card no. ' not in email:
+        if 'Transaction Alert - IndusInd Bank Credit Card' not in email:
             return
 
-        result = re.findall("Card\sno\.\s(.+?)\sfor\sINR\s(.+?)\sat\s(.+?)\son", email)
+        result = re.findall("Card\sending\s(.+?)\sfor\sINR(.+?)\son\s(.+?)\sat\s(.+?)\sis\s(.+?)\.", email)
         card_number = result[0][0]
-        while ' ' in card_number:
-            card_number = re.findall('Card\sno\.\s(.+?)$', card_number)[0]
-        card_number = card_number.replace('X', '')
+        amount = int(float(result[0][1].replace(',', '')) * 100)
+        merchant = result[0][3]
+        is_approved = result[0][4] == 'Approved'
 
-        amount = int(float(result[0][1]) * 100)
-        merchant = result[0][2]
+        if is_approved is False:
+            print("Transaction For Indusind Credit Card {} for amount was not approved".format(card_number, amount))
+            return
 
         transaction.card = cards.filter(card_number__endswith=card_number).first()
         transaction.amount_in_paise = amount
