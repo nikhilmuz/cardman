@@ -9,6 +9,8 @@ from rest_framework.views import APIView
 
 from banks.models import Bank
 from cardman import request_parsers
+from transactions.models import Transaction
+from cards.models import Card
 from .models import RegisteredEmail
 
 
@@ -52,12 +54,15 @@ class InboundEmailView(APIView):
                         importlib.import_module('emails.email_parsers.' + bank.cc_transaction_email_parser),
                         bank.cc_transaction_email_parser
                     )
-                    parser.parse(strip_non_ascii(decoded_message).replace('\r\n', '').replace('=', '').replace('>', ''),
-                                 user, bank)
+                    transaction = Transaction()
+                    parser(
+                        strip_non_ascii(decoded_message).replace('\r\n', '').replace('=', '').replace('>', ''),
+                        Card.objects.filter(user=user, bank=bank),
+                        transaction
+                    )
                     return Response({"success": True}, status=status.HTTP_200_OK)
 
             return Response({"success": True}, status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
-            pass
         return Response({"success": True}, status=status.HTTP_200_OK)
