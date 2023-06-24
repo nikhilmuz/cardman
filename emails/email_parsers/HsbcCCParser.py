@@ -6,13 +6,13 @@ from emails.email_parsers.BaseEmailParser import BaseEmailParser
 from transactions.models import Transaction
 
 
-class HdfcCCParser(BaseEmailParser):
+class HsbcCCParser(BaseEmailParser):
 
     def __init__(self, email: str, cards: QuerySet(Card), transaction: Transaction):
-        if 'Alert : Update on your HDFC Bank Credit Card' not in email:
+        if 'You have used your HSBC Credit Card ending with' not in email:
             return
 
-        result = re.findall("Card\sending\s(.+?)\sfor\sRs\s(.+?)\sat(.+?)\son", email)
+        result = re.findall("Credit\scard.*with\s(.+?),.*INR\s(.+?)\s.*payment\sto\s(.+?)\s", email)
         card_number = result[0][0]
         amount = int(float(result[0][1].replace(',', '')) * 100)
         merchant = result[0][2]
