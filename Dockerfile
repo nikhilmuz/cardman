@@ -19,7 +19,7 @@ COPY . .
 
 RUN python3 manage.py collectstatic --noinput
 
-# RUN mkdir media
+EXPOSE 8000
 
-CMD ["/app/start-server.sh"]
+ENTRYPOINT ["/app/start-server.sh"]
 
